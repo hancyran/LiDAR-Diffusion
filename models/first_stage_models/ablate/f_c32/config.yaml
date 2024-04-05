@@ -1,0 +1,74 @@
+model:
+  base_learning_rate: 4.5e-6
+  target: lidm.models.autoencoder.VQModel
+  params:
+    monitor: val/rec_loss
+    embed_dim: 8
+    n_embed: 16384
+    lib_name: lidm
+    use_mask: True  # False
+
+    ddconfig:
+      double_z: false
+      z_channels: 8
+      in_channels: 1
+      out_ch: 2
+      ch: 64
+      ch_mult: [1,1,2,2,2,4]  # num_down = len(ch_mult)-1
+      strides: [[1,2],[1,2],[1,2],[1,2],[1,2]]
+      num_res_blocks: 2
+      attn_levels: [5]
+      dropout: 0.0
+
+
+data:
+  target: main.DataModuleFromConfig
+  params:
+    batch_size: 4
+    num_workers: 8
+    wrap: true
+    dataset:
+      size: [64, 1024]
+      fov: [ 3,-25 ]
+      depth_range: [ 1.0,56.0 ]
+      depth_scale: 5.84  # np.log2(depth_max + 1)
+      x_range: [ -50.0, 50.0 ]
+      y_range: [ -50.0, 50.0 ]
+      z_range: [ -3.0, 1.0 ]
+      resolution: 1
+      num_channels: 1
+      num_cats: 10
+      num_views: 2
+      num_sem_cats: 19
+      filtered_map_cats: [ ]
+    aug:
+      flip: true
+      rotate: true
+      keypoint_drop: false
+      keypoint_drop_range: [ 5,20 ]
+      randaug: false
+    train:
+      target: lidm.data.kitti.KITTIImageTrain
+      params:
+        condition_key: image
+    validation:
+      target: lidm.data.kitti.KITTIImageValidation
+      params:
+        condition_key: image
+
+
+
+lightning:
+  callbacks:
+    image_logger:
+      target: main.ImageLogger
+      params:
+        batch_frequency: 1000
+        max_images: 8
+        increase_log_steps: true
+
+  trainer:
+    benchmark: true
+    accumulate_grad_batches: 2
+    max_steps: 40000
+    sync_batchnorm: true

@@ -1,0 +1,27 @@
+data:
+  target: main.DataModuleFromConfig
+  params:
+    dataset:
+      size: [32, 1024]
+      fov: [ 10,-30 ]
+      depth_range: [ 1.0,45.0 ]
+      depth_scale: 6.5
+      x_range: [ -30.0, 30.0 ]
+      y_range: [ -30.0, 30.0 ]
+      z_range: [ -3.0, 6.0 ]
+      resolution: 1
+      num_channels: 1
+      num_cats: 10
+      num_views: 6
+      num_sem_cats: 16
+      filtered_map_cats: [ ]
+    aug:
+      flip: false
+      rotate: false
+      keypoint_drop: false
+      keypoint_drop_range: [ 5,20 ]
+      randaug: false
+    validation:
+      target: lidm.data.nuscenes.NuScenesValidation
+      params:
+        condition_key: image

@@ -1,0 +1,27 @@
+data:
+  target: main.DataModuleFromConfig
+  params:
+    dataset:
+      size: [64, 1024]
+      fov: [ 3,-25 ]
+      depth_range: [ 1.0,56.0 ]
+      depth_scale: 6
+      x_range: [ -50.0, 50.0 ]
+      y_range: [ -50.0, 50.0 ]
+      z_range: [ -3.0, 1.0 ]
+      resolution: 1
+      num_channels: 1
+      num_cats: 10
+      num_views: 2
+      num_sem_cats: 19
+      filtered_map_cats: [ ]
+    aug:
+      flip: false
+      rotate: false
+      keypoint_drop: false
+      keypoint_drop_range: [ 5,20 ]
+      randaug: false
+    validation:
+      target: lidm.data.kitti.KITTI360Validation
+      params:
+        condition_key: image

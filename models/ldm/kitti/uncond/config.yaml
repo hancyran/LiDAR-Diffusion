@@ -1,0 +1,96 @@
+model:
+  base_learning_rate: 1.0e-06
+  target: lidm.models.diffusion.ddpm.LatentDiffusion
+  params:
+    linear_start: 0.0015
+    linear_end: 0.0195
+    num_timesteps_cond: 1
+    log_every_t: 200
+    timesteps: 1000
+    image_size: [16, 128]
+    channels: 8
+    monitor: val/loss_simple_ema
+    first_stage_key: image
+    unet_config:
+      target: lidm.modules.diffusion.openaimodel.UNetModel
+      params:
+        image_size: [16, 128]
+        in_channels: 8
+        out_channels: 8
+        model_channels: 256
+        attention_resolutions: [4, 2, 1]
+        num_res_blocks: 2
+        channel_mult: [1, 2, 4]
+        num_head_channels: 32
+        lib_name: lidm
+    first_stage_config:
+      target: lidm.models.autoencoder.VQModelInterface
+      params:
+        embed_dim: 8
+        n_embed: 16384
+        lib_name: lidm
+        use_mask: True  # False
+        ckpt_path: models/first_stage_models/kitti/f_c2_p4/model.ckpt
+        ddconfig:
+          double_z: false
+          z_channels: 8
+          in_channels: 1
+          out_ch: 2
+          ch: 64
+          ch_mult: [1,2,2,4]
+          strides: [[1,2],[2,2],[2,2]]
+          num_res_blocks: 2
+          attn_levels: []
+          dropout: 0.0
+        lossconfig:
+          target: torch.nn.Identity
+    cond_stage_config: "__is_unconditional__"
+
+data:
+  target: main.DataModuleFromConfig
+  params:
+    batch_size: 16
+    num_workers: 8
+    wrap: true
+    dataset:
+      size: [64, 1024]
+      fov: [ 3,-25 ]
+      depth_range: [ 1.0,56.0 ]
+      depth_scale: 5.84  # np.log2(depth_max + 1)
+      log_scale: true
+      x_range: [ -50.0, 50.0 ]
+      y_range: [ -50.0, 50.0 ]
+      z_range: [ -3.0, 1.0 ]
+      resolution: 1
+      num_channels: 1
+      num_cats: 10
+      num_views: 2
+      num_sem_cats: 19
+      filtered_map_cats: [ ]
+    aug:
+      flip: true
+      rotate: false
+      keypoint_drop: false
+      keypoint_drop_range: [ 5,20 ]
+      randaug: false
+    train:
+      target: lidm.data.kitti.KITTI360Train
+      params:
+        condition_key: image
+    validation:
+      target: lidm.data.kitti.KITTI360Validation
+      params:
+        condition_key: image
+
+
+lightning:
+  callbacks:
+    image_logger:
+      target: main.ImageLogger
+      params:
+        batch_frequency: 5000
+        max_images: 8
+        increase_log_steps: False
+
+  trainer:
+    benchmark: true
