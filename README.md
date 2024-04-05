@@ -135,8 +135,6 @@ CUDA_VISIBLE_DEVICES=0 python scripts/sample_cond.py -r models/lidm/kitti/sem2li
 <img src=assets/text2lidar.jpeg width="768"/>
 </p>
 
-Before run this task, download the pretrained camera-to-lidar LiDM at [Google Drive](https://drive.google.com/file/d/12ZT-f6W-3Hf3ZveYOTNlCMfFbTPwTgK7/view?usp=drive_link) and the 64-beam pretrained autoencoder at [Google Drive](https://drive.google.com/file/d/1jgxeCdY5MVwGVS9s1GrUA4pCltsRWiK7/view?usp=drive_link).
-
 
 To run sampling on pretrained models:
 ```
