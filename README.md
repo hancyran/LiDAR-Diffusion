@@ -1,6 +1,6 @@
 # LiDAR Diffusion Models [CVPR 2024]
 
-[**Towards Realistic Scene Generation with LiDAR Diffusion Models**](https://arxiv.org/pdf/2404.00815.pdf)
+[Towards Realistic Scene Generation with LiDAR Diffusion Models](https://arxiv.org/pdf/2404.00815.pdf) [[**BibTex**](#citation)]
 
 By [*Haoxi Ran*](https://hancyran.github.io/), [*Vitor Guizilini*](https://scholar.google.com.br/citations?user=UH9tP6QAAAAJ&hl=en), [*Yue Wang*](https://yuewang.xyz/)
 
@@ -9,17 +9,10 @@ By [*Haoxi Ran*](https://hancyran.github.io/), [*Vitor Guizilini*](https://schol
 <img src=assets/overview.png width="400"/>
 </p>
 
-### Citation
+## News
 
-If you find this project useful in your research, please consider citing:
-```
-@article{ran2024towards,
-  title={Towards Realistic Scene Generation with LiDAR Diffusion Models},
-  author={Ran, Haoxi and Guizilini, Vitor and Wang, Yue},
-  journal={arXiv preprint arXiv:2404.00815},
-  year={2024}
-}
-```
+- [Apr 5, 2024] Most code and a detailed study of our autoencoder design on is released! 
+
 
 
 ## Requirements
@@ -149,3 +142,16 @@ Coming Soon...
 ## Acknowledgement
 
 - Our codebase for the diffusion models builds heavily on [Latent Diffusion](https://github.com/CompVis/latent-diffusion)
+
+
+## Citation
+
+If you find this project useful in your research, please consider citing:
+```
+@article{ran2024towards,
+  title={Towards Realistic Scene Generation with LiDAR Diffusion Models},
+  author={Ran, Haoxi and Guizilini, Vitor and Wang, Yue},
+  journal={arXiv preprint arXiv:2404.00815},
+  year={2024}
+}
+```
