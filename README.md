@@ -11,7 +11,7 @@ By [*Haoxi Ran*](https://hancyran.github.io/), [*Vitor Guizilini*](https://schol
 
 ## News
 
-- [Apr 5, 2024] Most code and a detailed study of our autoencoder design on is released! 
+- [Apr 5, 2024] Most code and a detailed study of our autoencoder design along with the pretrained models is released! 
 
 
 
