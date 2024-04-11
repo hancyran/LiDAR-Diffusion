@@ -31,7 +31,7 @@ conda activate lidm
 
 **Overview of evaluation metrics**:
 
-<table>
+<table align="center">
 <thead>
   <tr>
     <th style="text-align: center; vertical-align: middle;" colspan="3">Perceptual Metrics<br>(generation &amp; reconstruction)</th>
@@ -51,6 +51,7 @@ conda activate lidm
   </tr>
 </tbody>
 </table>
+<br/>
 
 To standardize the evaluation of LiDAR generative models, we provide a **self-contained** and **mostly CUDA-accelerated** evaluation toolbox in the directory `./lidm/eval/`. It implements and integrates various evaluation metrics, including:
 * Perceptual metrics:
