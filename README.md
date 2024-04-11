@@ -29,6 +29,29 @@ conda activate lidm
 
 ## Evaluation Toolbox
 
+**Overview of evaluation metrics**:
+
+<table>
+<thead>
+  <tr>
+    <th style="text-align: center; vertical-align: middle;" colspan="3">Perceptual Metrics<br>(generation &amp; reconstruction)</th>
+    <th style="text-align: center; vertical-align: middle;" colspan="2">Statistical Metrics<br>(generation only)</th>
+    <th style="text-align: center; vertical-align: middle;" colspan="2">Distance metrics <br> (reconstruction only)</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td style="text-align: center; vertical-align: middle;">FRID</td>
+    <td style="text-align: center; vertical-align: middle;">FSVD</td>
+    <td style="text-align: center; vertical-align: middle;">FPVD</td>
+    <td style="text-align: center; vertical-align: middle;">JSD</td>
+    <td style="text-align: center; vertical-align: middle;">MMD</td>
+    <td style="text-align: center; vertical-align: middle;">CD</td>
+    <td style="text-align: center; vertical-align: middle;">EMD</td>
+  </tr>
+</tbody>
+</table>
+
 To standardize the evaluation of LiDAR generative models, we provide a **self-contained** and **mostly CUDA-accelerated** evaluation toolbox in the directory `./lidm/eval/`. It implements and integrates various evaluation metrics, including:
 * Perceptual metrics:
   * Fréchet Range Image Distance (**FRID**)
