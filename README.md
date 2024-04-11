@@ -31,7 +31,7 @@ conda activate lidm
 
 **Overview of evaluation metrics**:
 
-<table align="center">
+<table>
 <thead>
   <tr>
     <th style="text-align: center; vertical-align: middle;" colspan="3">Perceptual Metrics<br>(generation &amp; reconstruction)</th>
