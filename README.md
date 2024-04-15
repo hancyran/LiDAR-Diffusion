@@ -12,7 +12,7 @@
 
 </div>
 
-## News
+## :tada: News :tada:
 
 - [**Apr 14, 2024**] Pretrained autoencoders and LiDMs for different tasks are released!
 - [**Apr 5, 2024**] Our codebase and a detailed study of our autoencoder design along with the pretrained models is released! 
