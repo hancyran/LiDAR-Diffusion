@@ -53,6 +53,6 @@ Tip: Download the video instead of watching it with the Google Drive's built-in 
 ### LiDM Performance with Different Scaling Factors:
 
 <p align="center">
-<img src=assets/lidm_frid.png width="512"/>
-<img src=assets/lidm_fsvd.png width="512"/>
+<img src=assets/lidm_frid.png width="450"/>
+<img src=assets/lidm_fsvd.png width="450"/>
 </p>
