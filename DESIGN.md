@@ -30,23 +30,23 @@ Tip: Download the video instead of watching it with the Google Drive's built-in 
 ### LiDMs (trained with 10k steps, evaluated on generation):
 
 
-| Curvewise <br/> Factor | Patchwise <br/> Factor | Output <br/> Size | FRID(↓) | FSVD(↓) | FPVD(↓) | JSD(↓) | MMD(10$^-4$,↓) |
-|:----------------------:|:----------------------:|:-----------------:|:-------:|:-------:|:-------:|:------:|:--------------:|
-|          N/A           |          N/A           |   Ground Truth    |    -    |    -    |    -    |   -    |       -        |
-|                        |                        |                   |         |         |         |        |                |
-|           4            |           1            |     64x256x2      |   271   |   148   |   118   | 0.262  |      5.33      |
-|           8            |           1            |     64x128x3      |   162   |   85    |   68    | 0.234  |      5.03      |
-|           16           |           1            |      64x64x4      |   142   |   116   |   106   | 0.232  |      5.15      |
-|                        |                        |                   |         |         |         |        |                |
-|           1            |           2            |     32x512x2      |   205   |   154   |   132   | 0.248  |      6.15      |
-|           1            |           4            |     16x256x4      |   180   |   60    |   55    | 0.230  |      5.34      |
-|           1            |           8            |     8x128x16      |   192   |   88    |   78    | 0.243  |      5.14      |
-|                        |                        |                   |         |         |         |        |                |
-|           2            |           2            |     32x256x3      |   161   |   73    |   63    | 0.228  |      5.44      |
-|           4            |           2            |     32x128x4      |   165   |   76    |   65    | 0.231  |      5.28      |
-|           8            |           2            |      32x64x8      |   145   |   77    |   68    | 0.222  |      5.10      | 
-|           2            |           4            |     16x128x8      |   188   |   83    |   71    | 0.228  |      5.33      |
-|           4            |           4            |     16x128x16     |   162   |   56    |   49    | 0.228  |      4.82      |
+| Curvewise <br/> Factor | Patchwise <br/> Factor | Output <br/> Size | FRID(↓) | FSVD(↓) | FPVD(↓) | JSD(↓) | MMD(10$^-4$,↓) |                                                Directory                                                |
+|:----------------------:|:----------------------:|:-----------------:|:-------:|:-------:|:-------:|:------:|:--------------:|:-------------------------------------------------------------------------------------------------------:|
+|          N/A           |          N/A           |   Ground Truth    |    -    |    -    |    -    |   -    |       -        |                                                                                                         |
+|                        |                        |                   |         |         |         |        |                |                                                                                                         |
+|           4            |           1            |     64x256x2      |   271   |   148   |   118   | 0.262  |      5.33      | [Google Drive](https://drive.google.com/drive/folders/1_bf9apVwhhmyaYiUPO5vE1t6Tqwbj2dq?usp=drive_link) |
+|           8            |           1            |     64x128x3      |   162   |   85    |   68    | 0.234  |      5.03      | [Google Drive](https://drive.google.com/drive/folders/1M_NVgHNWbWDe6vOMML4ZpoO7-alKGGBl?usp=drive_link) |
+|           16           |           1            |      64x64x4      |   142   |   116   |   106   | 0.232  |      5.15      | [Google Drive](https://drive.google.com/drive/folders/19DkZhHhVj7oa7XITXbdcNLGqqDkfjri-?usp=drive_link) |
+|                        |                        |                   |         |         |         |        |                |                                                                                                         |
+|           1            |           2            |     32x512x2      |   205   |   154   |   132   | 0.248  |      6.15      | [Google Drive](https://drive.google.com/drive/folders/1l5VZRImWDZttHIgM5A6heWjSYocoeujq?usp=drive_link) |
+|           1            |           4            |     16x256x4      |   180   |   60    |   55    | 0.230  |      5.34      | [Google Drive](https://drive.google.com/drive/folders/1sg0iVMFf7EnAcUvpxq57kx7Y2D0Pclq7?usp=drive_link) |
+|           1            |           8            |     8x128x16      |   192   |   88    |   78    | 0.243  |      5.14      | [Google Drive](https://drive.google.com/drive/folders/163yiMd3nEey6igZWk2ldegdlGtJhRppf?usp=drive_link) |
+|                        |                        |                   |         |         |         |        |                |                                                                                                         |
+|           2            |           2            |     32x256x3      |   161   |   73    |   63    | 0.228  |      5.44      | [Google Drive](https://drive.google.com/drive/folders/1cP-ghlv996glNHewCF01iU5lHy9iOgQO?usp=drive_link) |
+|           4            |           2            |     32x128x4      |   165   |   76    |   65    | 0.231  |      5.28      | [Google Drive](https://drive.google.com/drive/folders/1zQf3_fFlp8r2b34ZySpHU4Nd1ilIDqRz?usp=drive_link) |
+|           8            |           2            |      32x64x8      |   145   |   77    |   68    | 0.222  |      5.10      | [Google Drive](https://drive.google.com/drive/folders/1EXK5tw95LOKqxclFNdIbc6qQ7H-whRKp?usp=drive_link) | 
+|           2            |           4            |     16x128x8      |   188   |   83    |   71    | 0.228  |      5.33      | [Google Drive](https://drive.google.com/drive/folders/1JIQTswdJ3s4b_w1BHv6WWFs29fTswgRy?usp=drive_link) |
+|           4            |           4            |     16x128x16     |   162   |   56    |   49    | 0.228  |      4.82      | [Google Drive](https://drive.google.com/drive/folders/1F47aSmU2CnWSx8mWZ1ICnKftgIUgpW58?usp=drive_link) |
 
 ### LiDM Performance with Different Scaling Factors:
 
