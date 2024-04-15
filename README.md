@@ -223,10 +223,10 @@ CUDA_VISIBLE_DEVICES=0 python scripts/text2lidar.py -r models/lidm/kitti/cam2lid
 
 If you find this project useful in your research, please consider citing:
 ```
-@article{ran2024towards,
-  title={Towards Realistic Scene Generation with LiDAR Diffusion Models},
-  author={Ran, Haoxi and Guizilini, Vitor and Wang, Yue},
-  journal={arXiv preprint arXiv:2404.00815},
-  year={2024}
+@inproceedings{ran2024towards,
+    title={Towards Realistic Scene Generation with LiDAR Diffusion Models},
+    author={Ran, Haoxi and Guizilini, Vitor and Wang, Yue},
+    booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+    year={2024}
 }
 ```
