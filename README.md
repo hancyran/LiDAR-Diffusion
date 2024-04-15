@@ -89,7 +89,7 @@ To test different tasks below, please download the pretrained LiDM and its corre
 
 #### 64-beam:
 
-|             Method             |  FRID(↓)  | FSVD(↓)  | FPVD(↓)  |  JSD(↓)   | MMD<br/>(10^-4,↓) |                                                        Checkpoint                                                        |                              Output&nbsp;LiDAR&nbsp;Point&nbsp;Clouds                              |
+|             Method             |  FRID(↓)  | FSVD(↓)  | FPVD(↓)  |  JSD(↓)   | MMD<br/>(10^-4,↓) |                                                        Checkpoint                                                        |                              Output&nbsp;LiDAR<br/>Point&nbsp;Clouds                               |
 |:------------------------------:|:---------:|:--------:|:--------:|:---------:|:-----------------:|:------------------------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------:|
 |           LiDAR-GAN            |   1222    |  183.4   |  168.1   |   0.272   |       4.74        |                                                            -                                                             | [[samples]](https://drive.google.com/file/d/1lzOqXHxtO83HNMZ_7_dU9GMee_Zm3clO/view?usp=drive_link) |
 |           LiDAR-VAE            |   199.1   |  129.9   |  105.8   |   0.237   |       7.07        |                                                            -                                                             | [[samples]](https://drive.google.com/file/d/1_6KGATYfzLur9bt8vISLXwzEIsjbXq_k/view?usp=drive_link) |
