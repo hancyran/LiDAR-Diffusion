@@ -21,11 +21,11 @@
 
 ## Requirements
 
-We provide an available [conda](https://conda.io/) environment named `lidm`:
+We provide an available [conda](https://conda.io/) environment named `lidar_diffusion`:
 
 ```
 sh init/create_env.sh
-conda activate lidm
+conda activate lidar_diffusion
 ```
 
 ## Evaluation Toolbox
