@@ -30,8 +30,8 @@ data:
       size: [64, 1024]
       fov: [ 3,-25 ]
       depth_range: [ 1.0,56.0 ]
-      depth_scale: 5.84  # np.log2(depth_max + 1)
-      log_scale: true
+      depth_scale: 56  # np.log2(depth_max + 1)
+      log_scale: false
       x_range: [ -50.0, 50.0 ]
       y_range: [ -50.0, 50.0 ]
       z_range: [ -3.0, 1.0 ]

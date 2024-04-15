@@ -6,6 +6,7 @@ data:
       fov: [ 10,-30 ]
       depth_range: [ 1.0,45.0 ]
       depth_scale: 6.5
+      log_scale: true
       x_range: [ -30.0, 30.0 ]
       y_range: [ -30.0, 30.0 ]
       z_range: [ -3.0, 6.0 ]

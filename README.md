@@ -14,7 +14,8 @@
 
 ## News
 
-- [**Apr 5, 2024**] Most code and a detailed study of our autoencoder design along with the pretrained models is released! 
+- [**Apr 14, 2024**] Pretrained autoencoders and LiDMs for different tasks are released!
+- [**Apr 5, 2024**] Our codebase and a detailed study of our autoencoder design along with the pretrained models is released! 
 
 
 
@@ -76,38 +77,86 @@ To test different tasks below, please download the pretrained LiDM and its corre
 
 ### Pretrained Autoencoders
 
-Coming Soon...
+#### 64-beam (evaluated on KITTI-360 val):
 
-### Pretrained LiDMs
+| Autoencoder | rFRID(↓) | rFSVD(↓) | rFPVD(↓) | CD(↓) | EMD(↓) |                                                  Checkpoint                                                   |                       Rec.&nbsp;Results&nbsp;val<br/>(Point&nbsp;Cloud)                        |         Comment          |
+|:-----------:|:--------:|:--------:|:--------:|:-----:|:------:|:-------------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------:|:------------------------:|
+|   f_c2_p4   |   2.15   |   20.2   |   16.2   | 0.160 | 0.203  | [Google Drive](https://drive.google.com/file/d/1fUlQVqnShylps4-PnFCRD-sW-6v_rAB4/view?usp=drive_link) (205MB) | [Video](https://drive.google.com/file/d/1bIjRtrF3ljtcR-esjTL79uJisn4cNf2D/view?usp=drive_link) |                          |
+|  f_c2_p4*   |   2.06   |   20.3   |   15.7   | 0.092 | 0.176  | [Google Drive](https://drive.google.com/file/d/1A0zhQQXZTr8IfvpmsXrsG3lISC8KLkka/view?usp=drive_link) (205MB) | [Video](https://drive.google.com/file/d/1P_FbIOmYtS3kgutVAYXr7RShryO5Md7s/view?usp=drive_link) | *: w/o logarithm scaling |
 
-Coming Soon...
 
-### Study on Design of Autoencoders 
+### Benchmark for Unconditional LiDAR Generation
 
-All the following experiments are conducted with 8 NVIDIA 3090 GPUs and _40k training steps_ on KITTI-360 (64-beam).
+#### 64-beam:
+
+|        Method        |  FRID(↓)  | FSVD(↓)  | FPVD(↓)  |  JSD(↓)   | MMD(10$^-4$,↓) |                                                  Checkpoint                                                   |                                      Output LiDAR Point Clouds                                      |
+|:--------------------:|:---------:|:--------:|:--------:|:---------:|:--------------:|:-------------------------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------------:|
+|      LiDAR-GAN       |   1222    |  183.4   |  168.1   |   0.272   |      4.74      |                                                       -                                                       |  [samples](https://drive.google.com/file/d/1lzOqXHxtO83HNMZ_7_dU9GMee_Zm3clO/view?usp=drive_link)   |
+|      LiDAR-VAE       |   199.1   |  129.9   |  105.8   |   0.237   |      7.07      |                                                       -                                                       |  [samples](https://drive.google.com/file/d/1_6KGATYfzLur9bt8vISLXwzEIsjbXq_k/view?usp=drive_link)   |
+|     ProjectedGAN     |   149.7   |   44.7   |   34.5   | **0.152** |    **2.77**    |                                                       -                                                       |  [samples](https://drive.google.com/file/d/1H2JVF7HokIizjIPu9j0ygwF3jY0eKJgx/view?usp=drive_link)   |
+|  LiDARGen^ (1160s)   |   129.0   |   39.2   |   33.4   |   0.188   |      2.88      |                                                       -                                                       |  [samples](https://drive.google.com/file/d/1N5jTHjM8XnUYAMYkbsOipUQGhZjqMYDD/view?usp=drive_link)   |
+|                      |           |          |          |           |                |                                                                                                               |                                                                                                     |
+|   LiDARGen^ (50s)    |   2051    |  480.55  |  400.69  |   0.506   |      9.91      |                                                       -                                                       |  [samples](https://drive.google.com/file/d/1qN4T0Jg8P4IJLdaR_7sBdjID3TtzLITy/view?usp=drive_link)   |
+| LiDM (f_c2_p4, 50s)  |   135.7   | **37.7** | **28.6** |   0.207   |      3.45      | [Google Drive](https://drive.google.com/file/d/1WKFwXi7xiXr2WCtM3ZX95CqlU-kOhhgC/view?usp=drive_link) (3.9GB) |  [samples](https://drive.google.com/file/d/1YWBqM7SwO5a14eJfxJyTromGZ2NT460h/view?usp=drive_link)   |
+| LiDM (f_c2_p4*, 50s) | **124.5** |   38.5   |   28.7   |   0.208   |      3.40      | [Google Drive](https://drive.google.com/file/d/1huCr1xQJ6ZRS2VYcJ99vDrCS8QhxVysQ/view?usp=drive_link) (3.9GB) |  [samples](https://drive.google.com/file/d/1DDtsfaYBGqkTkT878t_35oZLQu3L_zD0/view?usp=drive_link)   |
+
+NOTE:
+1. ^: samples generated by the officially released pretrained model in [LiDARGen github repo](https://github.com/vzyrianov/lidargen).
+2. All above results are calculated from our [evaluation toolbox](#evaluation-toolbox). For more details, please refer to [Evaluation Toolbox README](./lidm/eval/README.md).
+3. Each .pcd file is a list of point clouds stored by `joblib` package. To load those files, use command `joblib.load(path)`.
+
+To evaluate above methods (except _LiDM_) yourself, download our provided .pcd files in the **Output** column to directory `./models/baseline/kitti/[method]/`:
+
+```
+CUDA_VISIBLE_DEVICES=0 python scripts/sample.py -d kitti -f models/baseline/kitti/[method]/samples.pcd --baseline --eval
+```
+
+To evaluate LiDM through the given .pcd files:
+
+```
+CUDA_VISIBLE_DEVICES=0 python scripts/sample.py -d kitti -f models/lidm/kitti/[method]/samples.pcd --eval
+```
+
+### Pretrained LiDMs for Other Tasks
+
+|                  Task                  |                         Dataset                         | FRID(↓) | FSVD(↓) |                                                  Checkpoint                                                   |                                                   Output                                                    |
+|:--------------------------------------:|:-------------------------------------------------------:|:-------:|:-------:|:-------------------------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------------------:|
+| Semantic-Map-to-LiDAR <br/> (f_c2_p4*) | [SemanticKITTI](http://semantic-kitti.org/dataset.html) |  11.8   |  19.1   | [Google Drive](https://drive.google.com/file/d/1Mijx3cRPupsC2d4b2FwlbOXsojeHAXaO/view?usp=drive_link) (3.9GB) | [log.tar.gz](https://drive.google.com/file/d/1N2hMDO0boL5TPmnulApPspIpNnG5d9e5/view?usp=drive_link) (2.1GB) |
+|    Camera-to-LiDAR <br/> (f_c2_p4*)    | [KITTI-360](https://www.cvlibs.net/datasets/kitti-360/) |  38.9   |  32.1   | [Google Drive](https://drive.google.com/file/d/1XzY7fSHQz72gWVFcmit-NlkoSwtMWbfz/view?usp=drive_link) (7.5GB) | [log.tar.gz](https://drive.google.com/file/d/1PZrMwiZiVvpYuuMKxMHpWEalt0b1lM17/view?usp=drive_link) (5.4GB) |
+|     Text-to-LiDAR <br/> (f_c2_p4*)     |          _zero-shot_ from task Camera-to-LiDAR          |    -    |    -    |                                         From above _Camera-to-LiDAR_                                          |                                                      -                                                      |
+
+NOTE:
+1. The output `log.tar.gz` contains input conditions (`.png`), generated range images (`.png`), generated point clouds (`.txt`), and a collection of all output point clouds (`.pcd`). 
+
+
+### Study on Design of LiDAR Compression 
+
+For full details of our studies on the design of LiDAR Compression, please refer to [LiDAR Compression Design README](./DESIGN.md).
 
 Tip: Download the video instead of watching it with the Google Drive's built-in video player provides a better visualization.
 
-| Curvewise <br/> Factor | Patchwise <br/> Factor | Output <br/> Size | rFRID(↓) | rFSVD(↓) | rFPVD(↓) | CD(↓) | EMD(↓) | #Params (M) |                                                Directory                                                |                       Rec.&nbsp;Results&nbsp;val<br/>(Range&nbsp;Image)                        |                       Rec.&nbsp;Results&nbsp;val<br/>(Point&nbsp;Cloud)                        |
-|:----------------------:|:----------------------:|:-----------------:|:--------:|:--------:|:--------:|:-----:|:------:|:-----------:|:-------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------:|
-|          N/A           |          N/A           |   Ground Truth    |    -     |    -     |    -     |   -   |   -    |      -      |                                                    -                                                    |  [Video](https://drive.google.com/file/d/1wAtQSlVwF2jCpcL3zbXlk2lGUYzo1GBf/view?usp=sharing)   |  [Video](https://drive.google.com/file/d/1iHIB7Jw-WS0D_hXgQSOyyDyWCmPVR-6k/view?usp=sharing)   |
-|                        |                        |                   |          |          |          |       |        |             |                                                                                                         |                                                                                                |                                                                                                |
-|           4            |           1            |     64x256x2      |   0.2    |   12.9   |   13.8   | 0.069 | 0.151  |    9.52     | [Google Drive](https://drive.google.com/drive/folders/1bLGigdh3oNBTfskdX5yisqJ3fd99wFnR?usp=drive_link) | [Video](https://drive.google.com/file/d/1w7slbsRjlU4kb0kl6LyjX-JojJvoWQhG/view?usp=drive_link) | [Video](https://drive.google.com/file/d/17ewPXoRMeA_HsvEOznsvxy3d6iKk7hC2/view?usp=drive_link) |
-|           8            |           1            |     64x128x3      |   0.9    |   21.2   |   17.4   | 0.141 | 0.230  |    10.76    |  [Google Drive](https://drive.google.com/drive/folders/1qPCPJC9TsIEO2UaZqurPu99m4syzfzuq?usp=sharing)   |  [Video](https://drive.google.com/file/d/17kukYFlJY40_cVBuWXMLHiMe7ls2OLNh/view?usp=sharing)   |  [Video](https://drive.google.com/file/d/116IXDMgrWn6OHtyEYIo6aM1ARloX3BWF/view?usp=sharing)   |
-|           16           |           1            |      64x64x4      |   2.8    |   31.1   |   23.9   | 0.220 | 0.265  |    12.43    |  [Google Drive](https://drive.google.com/drive/folders/1IHm3KlwG4lQAa9Ygt3WRUPfDxAQ1Tjia?usp=sharing)   |  [Video](https://drive.google.com/file/d/12TKyoajTiU_hr1MAdK2PNveddorCshG4/view?usp=sharing)   |  [Video](https://drive.google.com/file/d/18NCV7JoR3W1COaPH96a1ozbh8-58eT6n/view?usp=sharing)   |
-|           32           |           1            |      64x32x8      |   16.4   |   49.0   |   38.5   | 0.438 | 0.344  |    13.72    |  [Google Drive](https://drive.google.com/drive/folders/1CnUGOoAZDrSbDG3DjVx5pcouAT5WQTGN?usp=sharing)   |  [Video](https://drive.google.com/file/d/1S2DPHfWAljKZrHJlPHIvxAPK2-rpdJ_J/view?usp=sharing)   |  [Video](https://drive.google.com/file/d/1yx8V4Qav7sCigcfSHrrrJQOFF-s2PryV/view?usp=sharing)   |
-|                        |                        |                   |          |          |          |       |        |             |                                                                                                         |                                                                                                |                                                                                                |
-|           1            |           2            |     32x512x2      |   1.5    |   25.0   |   23.8   | 0.096 | 0.178  |    2.87     |  [Google Drive](https://drive.google.com/drive/folders/16OLfvexGSuOO8zNxkVLvY6rglvLn3HRG?usp=sharing)   |  [Video](https://drive.google.com/file/d/1tPPD2Pnn_6ge3x2yoJXhkDhe0Wi5Qxhw/view?usp=sharing)   |  [Video](https://drive.google.com/file/d/1Xjg0ckVb208BFEgbv4VQtV-fVraEXUNC/view?usp=sharing)   |
-|           1            |           4            |     16x256x4      |   0.6    |   15.4   |   15.8   | 0.142 | 0.233  |    12.45    |  [Google Drive](https://drive.google.com/drive/folders/1ArTAar3UM-7eBmkGb2bqDF0MVW6GL0az?usp=sharing)   |  [Video](https://drive.google.com/file/d/1Q_ZTRKyDOAmP314p9B6Cip79mc-FJ2se/view?usp=sharing)   |  [Video](https://drive.google.com/file/d/1-t9zvSrov1OsF_WEIBqH3xkLzTJfxRBr/view?usp=sharing)   |
-|           1            |           8            |     8x128x16      |   17.7   |   35.7   |   33.1   | 0.384 | 0.327  |    15.78    |  [Google Drive](https://drive.google.com/drive/folders/1Ol2P6ZYYFjEImLAhIhY8iR_G6bLKI4Yx?usp=sharing)   |  [Video](https://drive.google.com/file/d/14hPy2utsaxwPxW5PA7gO7ak7f-lcd-X5/view?usp=sharing)   |  [Video](https://drive.google.com/file/d/1izj-_1hFkdaRCg2qUzkXByfCD-vBd_1M/view?usp=sharing)   |
-|           1            |           16           |      4x64x64      |   37.1   |   68.7   |   63.9   | 0.699 | 0.416  |    16.25    |  [Google Drive](https://drive.google.com/drive/folders/1_vihPf9xgnr4Zib-dYNUZ1n6kTMxT3rG?usp=sharing)   |  [Video](https://drive.google.com/file/d/1G7evMm3H6WvbHFhBlCa8wxPzwVC3q-8H/view?usp=sharing)   |  [Video](https://drive.google.com/file/d/1IdBrEpCIugvxVHyNOsNIg8Y8ZBWrHcWL/view?usp=sharing)   |
-|                        |                        |                   |          |          |          |       |        |             |                                                                                                         |                                                                                                |                                                                                                |
-|           2            |           2            |     32x256x3      |   0.4    |   11.2   |   12.2   | 0.094 | 0.199  |    13.09    |  [Google Drive](https://drive.google.com/drive/folders/1SdFEtMGRE9Oi23jlDrtebslc5hxhYLBQ?usp=sharing)   |  [Video](https://drive.google.com/file/d/1Ac4jVB6RkqMwV1fZcPGDyQhR3eE_Zj6C/view?usp=sharing)   |  [Video](https://drive.google.com/file/d/1pg2ezSmXiu3ensvj564JIy6CpB46uZm7/view?usp=sharing)   |
-|           4            |           2            |     32x128x4      |   3.9    |   19.6   |   16.6   | 0.197 | 0.236  |    14.35    |  [Google Drive](https://drive.google.com/drive/folders/1uWlZPiU9Jw4TFfvI4Avi4r0bEyJ9kw4i?usp=sharing)   |  [Video](https://drive.google.com/file/d/1yZGqe_DcDXew3JabnN4T1-P27ZlscHba/view?usp=sharing)   |  [Video](https://drive.google.com/file/d/1i_q6gVY4gMtzKYlhlMQ9QrRql73VX05j/view?usp=sharing)   |
-|           8            |           2            |      32x64x8      |   8.0    |   25.3   |   20.2   | 0.277 | 0.294  |    16.06    |  [Google Drive](https://drive.google.com/drive/folders/1Z9B7PjR5SlgAl2WLGmIPxiYTzmo17J--?usp=sharing)   |  [Video](https://drive.google.com/file/d/1HVqFbIE1lgotDplc8x7_hJkSU5vLtbRN/view?usp=sharing)   |  [Video](https://drive.google.com/file/d/1jSYWZMmPelmfWpVa7V5f2Byr9vN2BKXo/view?usp=sharing)   | 
-|           16           |           2            |     32x32x16      |   21.5   |   54.2   |   44.6   | 0.491 | 0.371  |    17.44    |  [Google Drive](https://drive.google.com/drive/folders/1jBaEiAymHACWTdy_GbYOiG9e-GFVkIfe?usp=sharing)   |  [Video](https://drive.google.com/file/d/1flAzjRLcl5Jtc_T--GbbomKWi42DvW9v/view?usp=sharing)   |  [Video](https://drive.google.com/file/d/1zfMzu6NFeLJhR1YPU28k7vPy1GX-80QT/view?usp=sharing)   |
-|           2            |           4            |     16x128x8      |   2.5    |   16.9   |   15.8   | 0.205 | 0.273  |    15.07    |  [Google Drive](https://drive.google.com/drive/folders/1w-4bF4yORsot6xb5ia95RXWhfHrfpK0T?usp=sharing)   |  [Video](https://drive.google.com/file/d/1rm0sviRg4LfImgWVCi6THi3pHF4kFccH/view?usp=sharing)   |  [Video](https://drive.google.com/file/d/1gPKB2zj44oLLEBuUXU8uiaXIcSWpyMOi/view?usp=sharing)   |
-|           4            |           4            |     16x128x16     |   13.8   |   29.5   |   25.4   | 0.341 | 0.317  |    16.86    |  [Google Drive](https://drive.google.com/drive/folders/1_hY52mbKy4t3U5eWQ4Stq-3wZX1FPXXz?usp=sharing)   |  [Video](https://drive.google.com/file/d/1ldMRXfUtFNBtjCCc-KYR311dQvCmn0EF/view?usp=sharing)   |  [Video](https://drive.google.com/file/d/129WcZXW3b6e4UMxZ9x4XCR3BlaKw1Vec/view?usp=sharing)   |
+#### Autoencoders (trained with 40k steps, evaluated on reconstruction):
+
+| Curvewise <br/> Factor | Patchwise <br/> Factor | Output <br/> Size | rFRID(↓) | rFSVD(↓) | #Params (M) |                                                                                Visualization of Reconstruction (val)                                                                                 |
+|:----------------------:|:----------------------:|:-----------------:|:--------:|:--------:|:-----------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+|          N/A           |          N/A           |   Ground Truth    |    -     |    -     |      -      | [Range Image](https://drive.google.com/file/d/1wAtQSlVwF2jCpcL3zbXlk2lGUYzo1GBf/view?usp=sharing), [Point Cloud](https://drive.google.com/file/d/1iHIB7Jw-WS0D_hXgQSOyyDyWCmPVR-6k/view?usp=sharing) |
+|                        |                        |                   |          |          |             |                                                                                                                                                                                                      |
+|           4            |           1            |     64x256x2      |   0.2    |   12.9   |    9.52     | [Range Image](https://drive.google.com/file/d/1w7slbsRjlU4kb0kl6LyjX-JojJvoWQhG/view?usp=sharing), [Point Cloud](https://drive.google.com/file/d/17ewPXoRMeA_HsvEOznsvxy3d6iKk7hC2/view?usp=sharing) |
+|           8            |           1            |     64x128x3      |   0.9    |   21.2   |    10.76    | [Range Image](https://drive.google.com/file/d/17kukYFlJY40_cVBuWXMLHiMe7ls2OLNh/view?usp=sharing), [Point Cloud](https://drive.google.com/file/d/116IXDMgrWn6OHtyEYIo6aM1ARloX3BWF/view?usp=sharing) |
+|           16           |           1            |      64x64x4      |   2.8    |   31.1   |    12.43    | [Range Image](https://drive.google.com/file/d/12TKyoajTiU_hr1MAdK2PNveddorCshG4/view?usp=sharing), [Point Cloud](https://drive.google.com/file/d/18NCV7JoR3W1COaPH96a1ozbh8-58eT6n/view?usp=sharing) |
+|           32           |           1            |      64x32x8      |   16.4   |   49.0   |    13.72    | [Range Image](https://drive.google.com/file/d/1S2DPHfWAljKZrHJlPHIvxAPK2-rpdJ_J/view?usp=sharing), [Point Cloud](https://drive.google.com/file/d/1yx8V4Qav7sCigcfSHrrrJQOFF-s2PryV/view?usp=sharing) |
+|                        |                        |                   |          |          |             |                                                                                                                                                                                                      |
+|           1            |           2            |     32x512x2      |   1.5    |   25.0   |    2.87     | [Range Image](https://drive.google.com/file/d/1tPPD2Pnn_6ge3x2yoJXhkDhe0Wi5Qxhw/view?usp=sharing), [Point Cloud](https://drive.google.com/file/d/1Xjg0ckVb208BFEgbv4VQtV-fVraEXUNC/view?usp=sharing) |
+|           1            |           4            |     16x256x4      |   0.6    |   15.4   |    12.45    | [Range Image](https://drive.google.com/file/d/1Q_ZTRKyDOAmP314p9B6Cip79mc-FJ2se/view?usp=sharing), [Point Cloud](https://drive.google.com/file/d/1-t9zvSrov1OsF_WEIBqH3xkLzTJfxRBr/view?usp=sharing) |
+|           1            |           8            |     8x128x16      |   17.7   |   35.7   |    15.78    | [Range Image](https://drive.google.com/file/d/14hPy2utsaxwPxW5PA7gO7ak7f-lcd-X5/view?usp=sharing), [Point Cloud](https://drive.google.com/file/d/1izj-_1hFkdaRCg2qUzkXByfCD-vBd_1M/view?usp=sharing) |
+|           1            |           16           |      4x64x64      |   37.1   |   68.7   |    16.25    | [Range Image](https://drive.google.com/file/d/1G7evMm3H6WvbHFhBlCa8wxPzwVC3q-8H/view?usp=sharing), [Point Cloud](https://drive.google.com/file/d/1IdBrEpCIugvxVHyNOsNIg8Y8ZBWrHcWL/view?usp=sharing) |
+|                        |                        |                   |          |          |             |                                                                                                                                                                                                      |
+|           2            |           2            |     32x256x3      |   0.4    |   11.2   |    13.09    | [Range Image](https://drive.google.com/file/d/1Ac4jVB6RkqMwV1fZcPGDyQhR3eE_Zj6C/view?usp=sharing), [Point Cloud](https://drive.google.com/file/d/1pg2ezSmXiu3ensvj564JIy6CpB46uZm7/view?usp=sharing) |
+|           4            |           2            |     32x128x4      |   3.9    |   19.6   |    14.35    | [Range Image](https://drive.google.com/file/d/1yZGqe_DcDXew3JabnN4T1-P27ZlscHba/view?usp=sharing), [Point Cloud](https://drive.google.com/file/d/1i_q6gVY4gMtzKYlhlMQ9QrRql73VX05j/view?usp=sharing) |
+|           8            |           2            |      32x64x8      |   8.0    |   25.3   |    16.06    | [Range Image](https://drive.google.com/file/d/1HVqFbIE1lgotDplc8x7_hJkSU5vLtbRN/view?usp=sharing), [Point Cloud](https://drive.google.com/file/d/1jSYWZMmPelmfWpVa7V5f2Byr9vN2BKXo/view?usp=sharing) | 
+|           16           |           2            |     32x32x16      |   21.5   |   54.2   |    17.44    | [Range Image](https://drive.google.com/file/d/1flAzjRLcl5Jtc_T--GbbomKWi42DvW9v/view?usp=sharing), [Point Cloud](https://drive.google.com/file/d/1zfMzu6NFeLJhR1YPU28k7vPy1GX-80QT/view?usp=sharing) |
+|           2            |           4            |     16x128x8      |   2.5    |   16.9   |    15.07    | [Range Image](https://drive.google.com/file/d/1rm0sviRg4LfImgWVCi6THi3pHF4kFccH/view?usp=sharing), [Point Cloud](https://drive.google.com/file/d/1gPKB2zj44oLLEBuUXU8uiaXIcSWpyMOi/view?usp=sharing) |
+|           4            |           4            |     16x128x16     |   13.8   |   29.5   |    16.86    | [Range Image](https://drive.google.com/file/d/1ldMRXfUtFNBtjCCc-KYR311dQvCmn0EF/view?usp=sharing), [Point Cloud](https://drive.google.com/file/d/129WcZXW3b6e4UMxZ9x4XCR3BlaKw1Vec/view?usp=sharing) |
 
 
 ## Unconditional LiDAR Generation
@@ -116,9 +165,10 @@ Tip: Download the video instead of watching it with the Google Drive's built-in 
 <img src=assets/uncond.jpeg width="512"/>
 </p>
 
-To run sampling on pretrained models (and to evaluate your results with flag "--eval"):
+To run sampling on pretrained models (and to evaluate your results with flag "--eval"), firstly download our provided [pretrained autoencoders](#pretrained-autoencoders) to directory `./models/first_stage_models/kitti/[model_name]` and [pretrained LiDMs](#benchmark-for-unconditional-lidar-generation) to directory `./models/lidm/kitti/[model_name]`:
+
 ```
-CUDA_VISIBLE_DEVICES=0 python scripts/sample.py -r models/lidm/kitti/uncond/model.ckpt -d kitti [--eval]
+CUDA_VISIBLE_DEVICES=0 python scripts/sample.py -d kitti -r models/lidm/kitti/[model_name]/model.ckpt -n 5000 --eval
 ```
 
 
