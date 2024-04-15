@@ -213,10 +213,6 @@ To run sampling on pretrained models:
 CUDA_VISIBLE_DEVICES=0 python scripts/text2lidar.py -r models/lidm/kitti/cam2lidar/model.ckpt -d kitti -p "an empty road with no object"
 ```
 
-## Layout-to-LiDAR
-
-Coming Soon...
-
 
 ## Acknowledgement
 
