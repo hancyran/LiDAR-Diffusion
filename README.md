@@ -87,23 +87,26 @@ To test different tasks below, please download the pretrained LiDM and its corre
 
 ### Benchmark for Unconditional LiDAR Generation
 
-#### 64-beam:
+#### 64-beam (2k samples):
 
 |         Method         | Encoder  |  FRID(↓)  | FSVD(↓)  | FPVD(↓)  |  JSD(↓)   | MMD<br/>(10^-4,↓) |                                                        Checkpoint                                                        |                                Output&nbsp;LiDAR<br/>Point&nbsp;Clouds                                |
 |:----------------------:|:--------:|:---------:|:--------:|:--------:|:---------:|:-----------------:|:------------------------------------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------------:|
-|       LiDAR-GAN        |          |   1222    |  183.4   |  168.1   |   0.272   |       4.74        |                                                            -                                                             |  [[samples]](https://drive.google.com/file/d/1lzOqXHxtO83HNMZ_7_dU9GMee_Zm3clO/view?usp=drive_link)   |
-|       LiDAR-VAE        |          |   199.1   |  129.9   |  105.8   |   0.237   |       7.07        |                                                            -                                                             |  [[samples]](https://drive.google.com/file/d/1_6KGATYfzLur9bt8vISLXwzEIsjbXq_k/view?usp=drive_link)   |
-|      ProjectedGAN      |          |   149.7   |   44.7   |   34.5   | **0.152** |     **2.77**      |                                                            -                                                             |  [[samples]](https://drive.google.com/file/d/1H2JVF7HokIizjIPu9j0ygwF3jY0eKJgx/view?usp=drive_link)   |
-| LiDARGen&nbsp;(1160s)† |          |   129.0   |   39.2   |   33.4   |   0.188   |       2.88        |                                                            -                                                             |  [[samples]](https://drive.google.com/file/d/1N5jTHjM8XnUYAMYkbsOipUQGhZjqMYDD/view?usp=drive_link)   |
+|       LiDAR-GAN        |          |   1222    |  183.4   |  168.1   |   0.272   |       4.74        |                                                            -                                                             | [[2k samples]](https://drive.google.com/file/d/1lzOqXHxtO83HNMZ_7_dU9GMee_Zm3clO/view?usp=drive_link) |
+|       LiDAR-VAE        |          |   199.1   |  129.9   |  105.8   |   0.237   |       7.07        |                                                            -                                                             | [[2k samples]](https://drive.google.com/file/d/1_6KGATYfzLur9bt8vISLXwzEIsjbXq_k/view?usp=drive_link) |
+|      ProjectedGAN      |          |   149.7   |   44.7   |   33.4   |   0.188   |       2.88        |                                                            -                                                             | [[2k samples]](https://drive.google.com/file/d/1LzLhuKpBOIZ6F7SlPtMdYuCSE_8P1qwz/view?usp=drive_link) |
+|      UltraLiDAR§       |          |   370.0   |   72.1   |   66.6   |   0.747   |       17.12       |                                                            -                                                             | [[2k samples]](https://drive.google.com/file/d/17kft5S0nA_lnjECrK_aHzI5q1Erma_T7/view?usp=drive_link) |
+| LiDARGen&nbsp;(1160s)† |          |   129.0   |   39.2   |   33.4   | **0.188** |     **2.88**      |                                                            -                                                             | [[2k samples]](https://drive.google.com/file/d/1N5jTHjM8XnUYAMYkbsOipUQGhZjqMYDD/view?usp=drive_link) |
 |                        |          |           |          |          |           |                   |                                                                                                                          |                                                                                                       |
-|  LiDARGen&nbsp;(50s)†  |          |   2051    |  480.6   |  400.7   |   0.506   |       9.91        |                                                            -                                                             |  [[samples]](https://drive.google.com/file/d/1qN4T0Jg8P4IJLdaR_7sBdjID3TtzLITy/view?usp=drive_link)   |
-|    LiDM&nbsp;(50s)     | f_c2_p4  |   135.7   | **37.7** | **28.6** |   0.207   |       3.45        | [[Google&nbsp;Drive]](https://drive.google.com/file/d/1WKFwXi7xiXr2WCtM3ZX95CqlU-kOhhgC/view?usp=drive_link)<br/>(3.9GB) | [[5k samples]](https://drive.google.com/file/d/1YWBqM7SwO5a14eJfxJyTromGZ2NT460h/view?usp=drive_link) |
-|    LiDM&nbsp;(50s)     | f_c2_p4* | **124.5** |   38.5   |   28.7   |   0.208   |       3.40        | [[Google&nbsp;Drive]](https://drive.google.com/file/d/1huCr1xQJ6ZRS2VYcJ99vDrCS8QhxVysQ/view?usp=drive_link)<br/>(3.9GB) | [[5k samples]](https://drive.google.com/file/d/1DDtsfaYBGqkTkT878t_35oZLQu3L_zD0/view?usp=drive_link) |
+|  LiDARGen&nbsp;(50s)†  |          |   2051    |  480.6   |  400.7   |   0.506   |       9.91        |                                                            -                                                             | [[2k samples]](https://drive.google.com/file/d/1qN4T0Jg8P4IJLdaR_7sBdjID3TtzLITy/view?usp=drive_link) |
+|    LiDM&nbsp;(50s)     | f_c2_p4  |   135.8   | **37.9** | **28.7** |   0.211   |       3.87        | [[Google&nbsp;Drive]](https://drive.google.com/file/d/1WKFwXi7xiXr2WCtM3ZX95CqlU-kOhhgC/view?usp=drive_link)<br/>(3.9GB) | [[2k samples]](https://drive.google.com/file/d/1mdWdzXHTW4IONgAYD44EvfUI8aokPfP_/view?usp=drive_link) |
+|    LiDM&nbsp;(50s)     | f_c2_p4* | **125.1** |   38.8   |   29.0   |   0.211   |       3.84        | [[Google&nbsp;Drive]](https://drive.google.com/file/d/1huCr1xQJ6ZRS2VYcJ99vDrCS8QhxVysQ/view?usp=drive_link)<br/>(3.9GB) | [[2k samples]](https://drive.google.com/file/d/18K-9ps9Ej-OACRKe7D30reY4l6CttN6T/view?usp=drive_link) |
 
 NOTE:
-1. †: samples generated by the officially released pretrained model in [LiDARGen github repo](https://github.com/vzyrianov/lidargen).
-2. All above results are calculated from our [evaluation toolbox](#evaluation-toolbox). For more details, please refer to [Evaluation Toolbox README](./lidm/eval/README.md).
-3. Each .pcd file is a list of point clouds stored by `joblib` package. To load those files, use command `joblib.load(path)`.
+1. Each method is evaluated with **2,000** randomly generated samples. 
+2. †: samples generated by the officially released pretrained model in [LiDARGen github repo](https://github.com/vzyrianov/lidargen).
+3. §: samples borrowed from [UltraLiDAR implementation](https://github.com/myc634/UltraLiDAR_nusc_waymo).
+4. All above results are calculated from our [evaluation toolbox](#evaluation-toolbox). For more details, please refer to [Evaluation Toolbox README](./lidm/eval/README.md).
+5. Each .pcd file is a list of point clouds stored by `joblib` package. To load those files, use command `joblib.load(path)`.
 
 To evaluate above methods (except _LiDM_) yourself, download our provided .pcd files in the **Output** column to directory `./models/baseline/kitti/[method]/`:
 
@@ -168,7 +171,7 @@ Tip: Download the video instead of watching it with the Google Drive's built-in 
 To run sampling on pretrained models (and to evaluate your results with flag "--eval"), firstly download our provided [pretrained autoencoders](#pretrained-autoencoders) to directory `./models/first_stage_models/kitti/[model_name]` and [pretrained LiDMs](#benchmark-for-unconditional-lidar-generation) to directory `./models/lidm/kitti/[model_name]`:
 
 ```
-CUDA_VISIBLE_DEVICES=0 python scripts/sample.py -d kitti -r models/lidm/kitti/[model_name]/model.ckpt -n 5000 --eval
+CUDA_VISIBLE_DEVICES=0 python scripts/sample.py -d kitti -r models/lidm/kitti/[model_name]/model.ckpt -n 2000 --eval
 ```
 
 

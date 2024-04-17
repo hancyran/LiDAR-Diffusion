@@ -358,6 +358,8 @@ if __name__ == "__main__":
     print(config)
 
     if opt.file is None:
+        if opt.eval:
+            assert len(opt.n_samples) == 2000, "Specify n_samples=2000 for evaluation"
         model, global_step = load_model(config, ckpt)
         print(f"global step: {global_step}")
         print(75 * "=")
@@ -389,6 +391,8 @@ if __name__ == "__main__":
         torch.cuda.empty_cache()
     else:
         all_samples = joblib.load(opt.file)
+        if opt.eval:
+            assert len(all_samples) == 2000, "Prepare 2000 samples before evaluation"
         all_samples = [sample.astype(np.float32) for sample in all_samples]
 
     if opt.image_size is None:
