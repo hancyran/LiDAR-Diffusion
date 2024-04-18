@@ -4,9 +4,11 @@
 [**Haoxi Ran**](https://hancyran.github.io/) · [**Vitor Guizilini**](https://scholar.google.com.br/citations?user=UH9tP6QAAAAJ&hl=en) · [**Yue Wang**](https://yuewang.xyz/)
 
 
-<a href="https://arxiv.org/abs/2404.00815"><img src='https://img.shields.io/badge/arXiv-LiDAR Diffusion-red' alt='arXiv'></a>
+<a href="https://hancyran.github.io/assets/paper/lidar_diffusion.pdf"><img src='https://img.shields.io/badge/PDF-LiDAR Diffusion-yellow' alt='PDF'></a>
+<a href="https://arxiv.org/abs/2404.00815"><img src='https://img.shields.io/badge/arXiv-2404.00815-red' alt='arXiv'></a>
 <a href="https://lidar-diffusion.github.io/"><img src='https://img.shields.io/badge/Project-LiDAR Diffusion-green' alt='Project'></a>
 <a href="#citation"><img src='https://img.shields.io/badge/BibTex-LiDAR Diffusion-blue' alt='Paper BibTex'></a>
+
 
 <img src=assets/overview.png width="400"/>
 
