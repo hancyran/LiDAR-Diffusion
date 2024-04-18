@@ -7,8 +7,8 @@ model:
     num_timesteps_cond: 1
     log_every_t: 100
     timesteps: 1000
-    image_size: [32, 64]
-    channels: 4
+    image_size: [16, 128]
+    channels: 8
     monitor: val/loss_simple_ema
     first_stage_key: image
     cond_stage_key: camera
@@ -18,9 +18,9 @@ model:
     unet_config:
       target: lidm.modules.diffusion.openaimodel.UNetModel
       params:
-        image_size: [32, 64]
-        in_channels: 4
-        out_channels: 4
+        image_size: [16, 128]
+        in_channels: 8
+        out_channels: 8
         model_channels: 256
         attention_resolutions: [4, 2, 1]
         num_res_blocks: 2
@@ -32,21 +32,21 @@ model:
     first_stage_config:
       target: lidm.models.autoencoder.VQModelInterface
       params:
-        embed_dim: 4
+        embed_dim: 8
         n_embed: 16384
         lib_name: lidm
-        use_mask: True  # False
-        ckpt_path: models/first_stage_models/kitti/f_c2_p4_wo_logscale/model.ckpt
+        use_mask: False  # False
+        ckpt_path: models/first_stage_models/kitti/f_c2_p4_wo_ls/model.ckpt
         ddconfig:
           double_z: false
-          z_channels: 4
+          z_channels: 8
           in_channels: 1
-          out_ch: 2
+          out_ch: 1
           ch: 64
-          ch_mult: [1,2,4,4,8]
-          strides: [[1,2],[1,2],[1,2],[2,2]]
+          ch_mult: [1,2,2,4]
+          strides: [[1,2],[2,2],[2,2]]
           num_res_blocks: 2
-          attn_levels: [4]
+          attn_levels: []
           dropout: 0.0
         lossconfig:
           target: torch.nn.Identity
@@ -54,9 +54,8 @@ model:
       target: lidm.modules.encoders.modules.FrozenClipMultiImageEmbedder
       params:
         model: ViT-L/14
-        split_per_view: 4
-        key: camera
         out_dim: 512
+        split_per_view: 4
 
 data:
   target: main.DataModuleFromConfig
@@ -68,8 +67,8 @@ data:
       size: [64, 1024]
       fov: [ 3,-25 ]
       depth_range: [ 1.0,56.0 ]
-      depth_scale: 5.84  # np.log2(depth_max + 1)
-      log_scale: true
+      depth_scale: 56  # np.log2(depth_max + 1)
+      log_scale: false
       x_range: [ -50.0, 50.0 ]
       y_range: [ -50.0, 50.0 ]
       z_range: [ -3.0, 1.0 ]

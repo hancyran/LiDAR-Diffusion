@@ -29,13 +29,13 @@ model:
         embed_dim: 8
         n_embed: 16384
         lib_name: lidm
-        use_mask: True  # False
+        use_mask: False  # False
         ckpt_path: models/first_stage_models/kitti/f_c2_p4/model.ckpt
         ddconfig:
           double_z: false
           z_channels: 8
           in_channels: 1
-          out_ch: 2
+          out_ch: 1
           ch: 64
           ch_mult: [1,2,2,4]
           strides: [[1,2],[2,2],[2,2]]
@@ -49,7 +49,7 @@ model:
 data:
   target: main.DataModuleFromConfig
   params:
-    batch_size: 16
+    batch_size: 4
     num_workers: 8
     wrap: true
     dataset:
