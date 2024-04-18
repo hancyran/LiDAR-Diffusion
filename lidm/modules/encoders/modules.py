@@ -237,7 +237,8 @@ class FrozenClipMultiImageEmbedder(FrozenClipImageEmbedder):
         super().__init__(**kwargs)
         self.split_per_view = split_per_view
         self.key = key
-        self.linear = nn.Linear(img_dim * num_views * split_per_view, out_dim)
+        self.linear = nn.Linear(img_dim, out_dim)
+        self.view_embedding = nn.Parameter(img_dim ** -0.5 * torch.randn((1, num_views * split_per_view, img_dim)))
 
     def forward(self, x):
         # x is assumed to be in range [0,1]
@@ -250,8 +251,77 @@ class FrozenClipMultiImageEmbedder(FrozenClipImageEmbedder):
             return x
 
         with torch.no_grad():
-            img_feats = [self.model.encode_image(self.preprocess(img)) for img in x]
-            x = torch.cat(img_feats, 1).float()[:, None]
+            img_feats = [self.model.encode_image(self.preprocess(img))[:, None] for img in x]
+            x = torch.cat(img_feats, 1).float() + self.view_embedding
             x = self.linear(x)
 
+        return x
+
+
+class FrozenClipImagePatchEmbedder(nn.Module):
+    """
+    Uses the CLIP image encoder.
+    """
+
+    def __init__(
+            self,
+            model,
+            jit=False,
+            device='cuda' if torch.cuda.is_available() else 'cpu',
+            antialias=False,
+            img_dim=1024,
+            out_dim=512,
+            num_views=1,
+            split_per_view=1
+    ):
+        super().__init__()
+        self.model, _ = clip.load(name=model, device='cpu', jit=jit)
+        self.init()
+
+        self.antialias = antialias
+
+        self.register_buffer('mean', torch.Tensor([0.48145466, 0.4578275, 0.40821073]), persistent=False)
+        self.register_buffer('std', torch.Tensor([0.26862954, 0.26130258, 0.27577711]), persistent=False)
+        self.view_embedding = nn.Parameter(img_dim ** -0.5 * torch.randn((1, num_views * split_per_view, 1, img_dim)))
+
+        self.linear = nn.Linear(img_dim, out_dim)
+
+    def init(self):
+        for param in self.model.parameters():
+            param.requires_grad = False
+        self.model.eval()
+
+    def preprocess(self, x):
+        x = kornia.geometry.resize(x, (224, 224),
+                                   interpolation='bicubic', align_corners=True,
+                                   antialias=self.antialias)
+        # x = (x + 1.) / 2.
+
+        # renormalize according to clip
+        x = kornia.enhance.normalize(x, self.mean, self.std)
+        return x
+
+    def encode_image_patch(self, x):
+        visual_encoder = self.model.visual
+        x = x.type(self.model.dtype)
+        x = visual_encoder.conv1(x)  # shape = [*, width, grid, grid]
+        x = x.reshape(x.shape[0], x.shape[1], -1)  # shape = [*, width, grid ** 2]
+        x = x.permute(0, 2, 1)  # shape = [*, grid ** 2, width]
+        x = torch.cat([visual_encoder.class_embedding.to(x.dtype) + torch.zeros(x.shape[0], 1, x.shape[-1], dtype=x.dtype, device=x.device), x], dim=1)  # shape = [*, grid ** 2 + 1, width]
+        x = x + visual_encoder.positional_embedding.to(x.dtype)
+        x = visual_encoder.ln_pre(x)
+
+        x = x.permute(1, 0, 2)  # NLD -> LND
+        x = visual_encoder.transformer(x)
+        x = x.permute(1, 0, 2)  # LND -> NLD
+        x = x[:, 1:, :]
+
+        return x
+
+    def forward(self, x):
+        # x is assumed to be in range [0,1]
+        img_feats = [self.encode_image_patch(self.preprocess(img))[:, None] for img in x]
+        x = torch.cat(img_feats, 1).float() + self.view_embedding
+        x = rearrange(x, 'b v n c -> b (v n) c')
+        x = self.linear(x)
         return x
