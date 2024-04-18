@@ -30,7 +30,7 @@ model:
         n_embed: 16384
         lib_name: lidm
         use_mask: True  # False
-        ckpt_path: models/first_stage_models/kitti/f_c2_p4/model.ckpt
+        ckpt_path: models/first_stage_models/kitti/f_c2_p4_wo_logscale/model.ckpt
         ddconfig:
           double_z: false
           z_channels: 8
