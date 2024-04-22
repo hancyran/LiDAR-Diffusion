@@ -218,6 +218,32 @@ To run sampling on pretrained models:
 CUDA_VISIBLE_DEVICES=0 python scripts/text2lidar.py -r models/lidm/kitti/cam2lidar/model.ckpt -d kitti -p "an empty road with no object"
 ```
 
+## Training
+
+
+Besides, to train your own LiDAR Diffusion Models, just run this command (for example, train both autoencoder and lidm on four gpus):
+```
+# train an autoencoder
+python main.py -b configs/autoencoder/kitti/autoencoder_c2_p4.yaml -t --gpus 0,1,2,3
+
+# train an LiDM
+python main.py -b configs/lidar_diffusion/kitti/uncond_c2_p4.yaml -t --gpus 0,1,2,3
+```
+
+To debug the training process, just add flag `-d`:
+```
+python main.py -b path/to/your/config.yaml -t --gpus 0, -d
+```
+
+To resume your training from an existing log directory or an existing checkpoint file, use the flag `-r`:
+```
+# using a log directory
+python main.py -b path/to/your/config.yaml -t --gpus 0, -r path/to/your/log
+
+# or, using a checkpoint 
+python main.py -b path/to/your/config.yaml -t --gpus 0, -r path/to/your/ckpt/file
+```
+
 
 ## Acknowledgement
 
