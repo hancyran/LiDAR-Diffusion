@@ -655,7 +655,7 @@ class LatentDiffusion(DDPM):
     def get_input(self, batch, k, return_first_stage_outputs=False, force_c_encode=False,
                   cond_key=None, return_original_cond=False, bs=None):
         # ground truth
-        import pdb; pdb.set_trace()
+        # import pdb; pdb.set_trace()
         x = super().get_input(batch, k)
         if bs is not None:
             x = x[:bs]
